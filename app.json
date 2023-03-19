@@ -5,6 +5,9 @@
       "bundler": "metro"
     },
     "name": "reanimated-experiment",
-    "slug": "reanimated-experiment"
+    "slug": "reanimated-experiment",
+    "ios": {
+      "bundleIdentifier": "com.ankit-tailor.reanimated-experiment"
+    }
   }
 }
