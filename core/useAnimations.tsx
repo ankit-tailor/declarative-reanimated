@@ -79,7 +79,7 @@ export const useAnimations = (props: any) => {
     });
 
     return finalAnimatedStyles;
-  });
+  }, [props, isMounted]);
 
   React.useEffect(() => {
     isMounted.value = true;
