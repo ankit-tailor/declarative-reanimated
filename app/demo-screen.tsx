@@ -3,9 +3,36 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAnimations } from "../core/useAnimations";
 import { Link } from "expo-router";
+import React from "react";
+
+function Shape() {
+  const animatedStyles = useAnimations({
+    initial: {
+      opacity: 0,
+      transform: [{ translateY: 200 }],
+    },
+    animate: {
+      opacity: 1,
+      transform: [{ translateY: 100 }],
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+    },
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 50,
+    },
+    // isMounted,
+  });
+
+  return <Animated.View style={[styles.box, animatedStyles]} />;
+}
 
 export default function Box() {
   const isMounted = useSharedValue(false);
+  const [trigger, setTrigger] = React.useState(true);
 
   // const animatedStyles = useAnimatedStyle(() => {
   //   if (isMounted.value) {
@@ -25,24 +52,6 @@ export default function Box() {
   //   }
   // });
 
-  const animatedStyles = useAnimations({
-    initial: {
-      opacity: 0,
-      transform: [{ translateY: 200 }],
-    },
-    animate: {
-      opacity: 1,
-      transform: [{ translateY: 100 }],
-      rotateX: "180deg",
-    },
-    transition: {
-      type: "timing",
-      duration: 1000,
-      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-    },
-    // isMounted,
-  });
-
   // React.useEffect(() => {
   //   // isMounted.value = true;
   // }, [isMounted]);
@@ -52,7 +61,9 @@ export default function Box() {
       <SafeAreaView />
       <Pressable
         onPress={() => {
-          isMounted.value = isMounted.value ? false : true;
+          isMounted.value = true;
+          setTrigger(!trigger);
+          console.log("isMounted.value", isMounted.value);
         }}
         style={{
           backgroundColor: "red",
@@ -63,7 +74,7 @@ export default function Box() {
       >
         <Text style={{ color: "white", fontSize: 16 }}>Click me</Text>
       </Pressable>
-      <Animated.View style={[styles.box, animatedStyles]} />
+      {trigger && <Shape />}
       <Link href="/">Go to home screen</Link>
     </View>
   );
